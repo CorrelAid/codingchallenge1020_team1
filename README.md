@@ -3,5 +3,14 @@
 ## October 1
 
 1. Data Exploration:
-- skewed?
+- Skewed?
+- How bad is the noise?
+- How much empty space?
+
+2. Data Preprocessing:
+- band-pass filter?
+- denoising?
+- 
+
+3. Data Augmentation?
 - 
