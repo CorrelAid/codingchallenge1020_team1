@@ -40,6 +40,8 @@ In ASR, we can use a pronunciation table to produce the phones for the text sequ
 2. Raw spectograms (or log spectogram)
 3. Mel power spectogram
 4. PLP
+
+
 For NN based models generally spectograms are used
 
 ## Models 
@@ -60,6 +62,8 @@ where **P(X)** is probability of observed event, **P(X|S)** is probability of an
 internal states known as transition density. The likelihood of feature given phone is calculated by GMM: 
 
 <img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X|S)=\sum_jp_j\mathcal{N}(\mu_j,\sigma_j)" title="P(X|S)=\sum_jp_j\mathcalN(\mu_j,\sigma_j)" />.
+
+
 We can learn the Gaussian model (p) for each phone from the training data.
 
 To avoid exponential complexity in HMM modelling, probability up to some sequence is calculated instead of whole sequence. This learning of transition probability and conditional probability is done via algorithms such as **forward-backward** algorithm.
@@ -69,7 +73,7 @@ To avoid exponential complexity in HMM modelling, probability up to some sequenc
 In this model, DNN is trained to provide posterior probability estimates for the HMM states (**P(S|X)**). 
 Specifically, for an observation, the output of the DNN (**y(S)**) for the HMM state S is obtained.
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;y(S)=P(S|X)=\frac{exp{a(S)}}{\sum_S'exp{a(S')}}" title="y(S)=P(S|X)=\frac{exp{a(S)}}{\sum_S'exp{a(S')}}" />.
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;y(S)=P(S|X)=\frac{exp(a(S))}{\sum_S'exp(a(S'))}" title="y(S)=P(S|X)=\frac{exp{a(S)}}{\sum_S'exp{a(S')}}" />.
 
 where **a(S)** is the activation at the output layer corresponding
 to state S. The recognizer uses a pseudo log-likelihood of state
