@@ -50,11 +50,11 @@ For the acoustic model, the input is generally the HMM state and the output is t
 1. MFCC
 2. Raw spectograms (or log spectogram)
 3. Mel power spectogram
-4. PLP
-5. Power spectrum
+4. PLP (perceptual linear prediction)
+5. Power level specrum features using Short Time Fourier Transform
 
 
-For NN based models generally spectograms are used
+For NN based models generally spectograms are used. wav2Letter for example used a STFT on raw audio followed by a mel-scaling before feeding it to a CNN.
 
 ## Models 
 
@@ -116,6 +116,7 @@ transcription. The most popular one is certainly the Connectionist Temporal Clas
 (CTC) criterion, which is at the core of Deep Speech. CTC assumes that the
 network output probability scores, normalized at the frame level. It considers all possible sequence of
 letters (or any sub-word units), which can lead to a to a given transcription.
+- **AutoSegCriterion**: Used in [wav2Letter](https://arxiv.org/abs/1609.03193)
 
 ### 4. **Transformer: Attention based models and hybrid CTC/Attention**
 
@@ -126,14 +127,19 @@ letters (or any sub-word units), which can lead to a to a given transcription.
 ### 7. **SOTA: Time-Depth Separables + CTC**: [wav2letter](https://research.fb.com/wp-content/uploads/2020/01/Scaling-up-online-speech-recognition-using-ConvNets.pdf)
 
 
+[1] GMM-HMM example git (https://github.com/jayaram1125/Single-Word-Speech-Recognition-using-GMM-HMM-/blob/master/HMMSpeechRecognition.py)
 
-[1] DNN-HMM (http://www.fit.vutbr.cz/research/groups/speech/publi/2013/vesely_interspeech2013_IS131333.pdf)
+[2] DNN-HMM (http://www.fit.vutbr.cz/research/groups/speech/publi/2013/vesely_interspeech2013_IS131333.pdf)
 
-[2] DBLSTM, RNN-HMM (http://www.cs.toronto.edu/~graves/asru_2013.pdf)
+[3] DBLSTM, RNN-HMM (http://www.cs.toronto.edu/~graves/asru_2013.pdf)
 
-[3] Deep Speech (https://arxiv.org/pdf/1412.5567.pdf)
+[4] Deep Speech (https://arxiv.org/pdf/1412.5567.pdf)
 
-[4] ESPnet (https://github.com/espnet/espnet)
+[5] ESPnet (https://github.com/espnet/espnet)
+
+[6] Transfer learning Eng:De (https://arxiv.org/pdf/1706.00290.pdf)
+
+[7] TF tutorial (https://missinglink.ai/guides/tensorflow/tensorflow-speech-recognition-two-quick-tutorials/)
 
 
 
