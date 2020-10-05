@@ -97,9 +97,9 @@ S given observation X:
 
 where **P(S)** is the prior probability of state s calculated from the training data.
 
---- **Fully Connected** : We can use the features from the Mel filter bank as input to an FC network. Some ASR FC models contain 3–8 hidden layers with 2048 hidden units in each layer.
---- **CNN/TDNN** : CNN takes advantage of locality and discovers local information hierarchically. CNN is more efficient if the information has a strong spatial relationship. It allows deeper layers and creates a more complex function. Audio speech is time-sequence data. Instead of applying a 2D convolution filter, we can use a 1-D filter to extract features across multiple frames in time. This is the Time-delay neural networks (TDNN).
---- **RNN (LSTM/GRU)** : RNN based architectures to handle time sequence can also be used.
+- **Fully Connected** : We can use the features from the Mel filter bank as input to an FC network. Some ASR FC models contain 3–8 hidden layers with 2048 hidden units in each layer.
+- **CNN/TDNN** : CNN takes advantage of locality and discovers local information hierarchically. CNN is more efficient if the information has a strong spatial relationship. It allows deeper layers and creates a more complex function. Audio speech is time-sequence data. Instead of applying a 2D convolution filter, we can use a 1-D filter to extract features across multiple frames in time. This is the Time-delay neural networks (TDNN).
+- **RNN (LSTM/GRU)** : RNN based architectures to handle time sequence can also be used. An example is [DeepSpeech](https://github.com/mozilla/DeepSpeech)
 
 In the DNN networks, instead of using cross-entropy (CE) error functions, sequence training objective functions have been found to be more useful:
 - MMIE: Maximum mutual information estimation (MMIE) aims to directly maximise the
@@ -109,6 +109,8 @@ posterior probability (sometimes called conditional maximum likelihood).
 - MBR : Minimum Bayes' Risk
 
 [1] DNN-HMM (http://www.fit.vutbr.cz/research/groups/speech/publi/2013/vesely_interspeech2013_IS131333.pdf)
+[2] DBLSTM, RNN-HMM (http://www.cs.toronto.edu/~graves/asru_2013.pdf)
+[3] Deep Speech (https://arxiv.org/pdf/1412.5567.pdf)
 
 
 
