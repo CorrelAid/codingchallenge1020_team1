@@ -45,8 +45,8 @@ For NN based models generally spectograms are used
 1. GMM-HMM (before DL): Gaussian-Mixture-Model & Hidden-Markov-Model
 
 
-In this the distribution of features of a phone is modelled by GMM. HMM models transition between phones 
-and corresponding audio features (MFCC for example).
+In this setup, the distribution of features of a phone is modelled by GMM(acoustic model). Given a phone, it models observed probability distribution of the feature vector. HMM models transition between phones 
+and corresponding audio features (MFCC for example). HMM models how hidden states (phones) is transited and observed.
 
 
 When a HMM model is learned, **forward learning** is used to calculate the likelihood of observations:
@@ -55,7 +55,11 @@ When a HMM model is learned, **forward learning** is used to calculate the likel
 
 
 where **P(X)** is probability of observed event, **P(X|S)** is probability of an observation given an internal state, **P(S)** is transition probability between 
-internal states.
+internal states. The likelihood of feature given phone is calculated by GMM: 
+
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X|S)=\sum_jp_j\mathcalN(\mu_j,\sigma_j)" title="P(X|S)=\sum_jp_j\mathcalN(\mu_j,\sigma_j)" />
+
+To avoid exponential complexity, probability up to some sequence is calculated instead of whole sequence. This learning of transition probability and conditional probability is done via algorithms such as **forward-backward** algorithm.
 
 
 
