@@ -57,7 +57,7 @@ When a HMM model is learned, **forward learning** is used to calculate the likel
 where **P(X)** is probability of observed event, **P(X|S)** is probability of an observation given an internal state, **P(S)** is transition probability between 
 internal states. The likelihood of feature given phone is calculated by GMM: 
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X|S)=\sum_jp_j\mathcalN(\mu_j,\sigma_j)" title="P(X|S)=\sum_jp_j\mathcalN(\mu_j,\sigma_j)" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X|S)=\sum_jp_j\mathcal{N}(\mu_j,\sigma_j)" title="P(X|S)=\sum_jp_j\mathcalN(\mu_j,\sigma_j)" />
 
 To avoid exponential complexity, probability up to some sequence is calculated instead of whole sequence. This learning of transition probability and conditional probability is done via algorithms such as **forward-backward** algorithm.
 
