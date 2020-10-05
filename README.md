@@ -46,7 +46,7 @@ For NN based models generally spectograms are used
 
 ## Models 
 
-### 1. **GMM-HMM (before DL): Gaussian-Mixture-Model & Hidden-Markov-Model**
+### 1. **GMM-HMM: Gaussian-Mixture-Model & Hidden-Markov-Model**
 
 
 In this setup, the distribution of features of a phone is modelled by GMM(acoustic model). Given a phone, it models observed probability distribution of the feature vector. HMM models transition between phones 
@@ -79,7 +79,7 @@ where **a(S)** is the activation at the output layer corresponding
 to state S. The recognizer uses a pseudo log-likelihood of state
 S given observation X:
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X|S)=\logy(S)-\logP(S)" title="P(X|S)=\logy(S)-\logP(S)" />.
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;P(X|S)=logy(S)-logP(S)" title="P(X|S)=\logy(S)-\logP(S)" />.
 
 where **P(S)** is the prior probability of state s calculated from the training data.
 
