@@ -51,6 +51,7 @@ For the acoustic model, the input is generally the HMM state and the output is t
 2. Raw spectograms (or log spectogram)
 3. Mel power spectogram
 4. PLP
+5. Power spectrum
 
 
 For NN based models generally spectograms are used
@@ -98,31 +99,37 @@ S given observation X:
 where **P(S)** is the prior probability of state s calculated from the training data.
 
 - **Fully Connected** : We can use the features from the Mel filter bank as input to an FC network. Some ASR FC models contain 3–8 hidden layers with 2048 hidden units in each layer.
-- **CNN** : CNN takes advantage of locality and discovers local information hierarchically. CNN is more efficient if the information has a strong spatial relationship. It allows deeper layers and creates a more complex function. Audio speech is time-sequence data. Instead of applying a 2D convolution filter, we can use a 1-D filter to extract features across multiple frames in time. This is the Time-delay neural networks (TDNN).
+- **CNN** : CNN takes advantage of locality and discovers local information hierarchically. CNN is more efficient if the information has a strong spatial relationship. It allows deeper layers and creates a more complex function. Audio speech is time-sequence data. An example is [Wav2Letter](https://arxiv.org/pdf/1609.03193.pdf)
 - **RNN (LSTM/GRU)** : RNN based architectures to handle time sequence can also be used. An example is [DeepSpeech](https://github.com/mozilla/DeepSpeech)
 
-In the DNN networks, instead of using cross-entropy (CE) error functions, sequence training objective functions have been found to be more useful:
+In the DNN networks, instead of using cross-entropy (CE) error functions, **sequence training objective functions** have been found to be more useful:
 - MMIE: Maximum mutual information estimation (MMIE) aims to directly maximise the
 posterior probability (sometimes called conditional maximum likelihood).
 - BMMI: Boosted MMI
 - MPE : Minimum phone error
 - MBR : Minimum Bayes' Risk
+- **CTC: Connectionist temporal classification**: Most large labeled speech databases provide only a text transcription for each audio file. In a
+classification framework (and given our acoustic model produces letter predictions), one would
+need the segmentation of each letter in the transcription to train properly the model. Unfortunately,
+manually labeling the segmentation of each letter would be tedious. More recently, standalone neural network architectures have been trained using criterions which jointly infer the segmentation of the transcription while increase the overall score of the right
+transcription. The most popular one is certainly the Connectionist Temporal Classification
+(CTC) criterion, which is at the core of Deep Speech. CTC assumes that the
+network output probability scores, normalized at the frame level. It considers all possible sequence of
+letters (or any sub-word units), which can lead to a to a given transcription.
 
-### **CTC: Connectionist temporal classification**
+### 4. **Transformer: Attention based models and hybrid CTC/Attention**
 
-### **TDNN (Transformer based encoder): Attention based models and hybrid CTC/Attention**
+### 5. **Conformer**
 
-### **Conformer**
+### 6. **Transducer based models**
 
-### **Transducer based models**
+### 7. **SOTA: Time-Depth Separables + CTC**: [wav2letter](https://research.fb.com/wp-content/uploads/2020/01/Scaling-up-online-speech-recognition-using-ConvNets.pdf)
 
 
 
 [1] DNN-HMM (http://www.fit.vutbr.cz/research/groups/speech/publi/2013/vesely_interspeech2013_IS131333.pdf)
 
-
 [2] DBLSTM, RNN-HMM (http://www.cs.toronto.edu/~graves/asru_2013.pdf)
-
 
 [3] Deep Speech (https://arxiv.org/pdf/1412.5567.pdf)
 
