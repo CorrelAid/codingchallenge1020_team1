@@ -1,6 +1,10 @@
-import numpy
+import numpy as np
 import librosa
+import librosa.feature
+import json
 import os
+import csv
+
 
 def correct_additional_utterances(path, subfolder_name="corrected"):
     ''' A function to convert the additional utterances of the Zindi-Challenge to proper WAV files
@@ -49,3 +53,62 @@ def correct_additional_utterances(path, subfolder_name="corrected"):
             command_to_run = "ffmpeg -i {} {}".format(audio_file_path, corrected_audio_file_path)
             os.system(command_to_run)
 
+
+def load_original_utterances(path_original="data\\audio_files",
+                             train_csv_path="Train.csv", label_to_num="label_to_num.txt",
+                             sample_rate=44100, energy_threshold=0.18):
+    """Function to load and return all original utterances
+
+    :param path_original: Path to directory where .wav files are located
+    :param train_csv_path: Path to the Train.csv file
+    :param label_to_num: Path to the label_to_num.txt file or the already loaded dict
+    :param sample_rate: sample rate for loading audio data
+    :param energy_threshold: Energy threshold under which an audio sample gets discarded
+    :return: signals (list of np arrays of audio data), labels (list of corresponding labels)
+    """
+
+    # Load dict from txt if dict wasn't directly provided
+    if isinstance(label_to_num, str):
+        with open(label_to_num, 'r') as file:
+            label_to_num = json.load(file)
+
+    if not isinstance(label_to_num, dict):
+        print("label_to_num seems to be neither a dict nor a path to a json dict.")
+        return
+
+    # Load Train.csv file
+    csv_file = open(train_csv_path, newline='')
+    train_csv = csv.reader(csv_file, delimiter=',')
+    # Call iterator one time to get rid of first row that only contains descriptions
+    train_csv.__next__()
+
+    signals = []
+    labels = []
+    ignored_audio = []
+
+    for row in train_csv:
+        filename, label = row
+        # Get only name of wav file without rest of path in Train.csv
+        filename = filename.split('/')[-1]
+        # Convert string label to number label
+        label_num = label_to_num[label]
+
+        # Using os.path.join for all path operations to make it OS agnostic
+        file_path = os.path.join(path_original, filename)
+
+        # Load signal and calculate total energy
+        signal, sr = librosa.load(file_path, sr=sample_rate)
+        energy = np.sum(librosa.feature.rms(signal))
+
+        # Skip if energy is below threshold
+        if energy <= energy_threshold:
+            ignored_audio.append(filename)
+            continue
+
+        signals.append(signal)
+        labels.append(label_num)
+
+    print("Following files where under the energy threshold of {} and "
+          "were not loaded: {}".format(energy_threshold, ignored_audio))
+
+    return signals, labels
