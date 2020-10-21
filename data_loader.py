@@ -6,20 +6,21 @@ import os
 import csv
 
 
-def correct_additional_utterances(path, subfolder_name="corrected"):
-    ''' A function to convert the additional utterances of the Zindi-Challenge to proper WAV files
+def correct_additional_utterances(path_additional, subfolder_name="corrected"):
+    """A function to convert the additional utterances of the Zindi-Challenge to proper WAV files
 
     The function uses FFMPEG to convert the additional given .wav files (which all actually use OGG
     codec) to proper .wav files to avoid handling problems. It assumes the original given folder
     structure in which every class has a separate folder with some .wav files in there. It will create
     a new subfolder and store the converted versions (with the same name as the original) in there.
 
-    :param path: Path to the directory in which the class directories are found
+    :param path_additional: Path to the directory in which the class directories are found
     :param subfolder_name: Name of the newly created subfolder for the new converted audio
-    '''
+    :return: Returns None if aborted due to wrong input
+    """
 
     # Create list of all class folders
-    class_folders = os.listdir(path)
+    class_folders = os.listdir(path_additional)
 
     # Catch some pathing mistakes (though not all)
     if len(class_folders) == 0:
@@ -34,7 +35,7 @@ def correct_additional_utterances(path, subfolder_name="corrected"):
     for class_folder in class_folders:
 
         # Path to distinctive class subfolders
-        class_path = os.path.join(path, class_folder)
+        class_path = os.path.join(path_additional, class_folder)
         # Path to new subfolder for converted audio files
         path_new_subfolder = os.path.join(class_path, subfolder_name)
 
