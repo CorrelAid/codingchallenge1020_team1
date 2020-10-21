@@ -112,3 +112,64 @@ def load_original_utterances(path_original="data\\audio_files",
           "were not loaded: {}".format(energy_threshold, ignored_audio))
 
     return signals, labels
+
+
+def load_additional_utterances(path_additional="data\\AdditionalUtterances\\latest_keywords\\",
+                               label_to_num="label_to_num.txt", sample_rate=44100,
+                               energy_threshold=0.18, subfolder_name="corrected"):
+    """Function to load and return all additional utterances
+
+        :param path_additional: Path to directory where the separate class directories are found
+        :param label_to_num: Path to the label_to_num.txt file or the already loaded dict
+        :param sample_rate: sample rate for loading audio data
+        :param energy_threshold: Energy threshold under which an audio sample gets discarded
+        :param subfolder_name: Name of subfolder if correct_additional_utterances() has already been run.
+                               Put None if that's not the case.
+        :return: signals (list of np arrays of audio data), labels (list of corresponding labels)
+        """
+
+    # Load dict from txt if dict wasn't directly provided
+    if isinstance(label_to_num, str):
+        with open(label_to_num, 'r') as file:
+            label_to_num = json.load(file)
+
+    if not isinstance(label_to_num, dict):
+        print("label_to_num seems to be neither a dict nor a path to a json dict.")
+        return
+
+    signals = []
+    labels = []
+    ignored_audio = []
+
+    class_dirs = os.listdir(path_additional)
+
+    for class_dir in class_dirs:
+        # Convert class folder label to numerical label
+        label_num = label_to_num[class_dir]
+
+        target_folder_path = os.path.join(path_additional, class_dir)
+        # if subfolder_name is provided, assume that right data is found there
+        # and correct_additional_utterances() has already been run
+        if subfolder_name is not None:
+            target_folder_path = os.path.join(target_folder_path, subfolder_name)
+
+        audio_files = os.listdir(target_folder_path)
+        for audio_file in audio_files:
+            file_path = os.path.join(target_folder_path, audio_file)
+
+            # Load signal and calculate total energy
+            signal, sr = librosa.load(file_path, sr=sample_rate)
+            energy = np.sum(librosa.feature.rms(signal))
+
+            # Skip if energy is below threshold
+            if energy <= energy_threshold:
+                ignored_audio.append(os.path.join(class_dir, audio_file))
+                continue
+
+            signals.append(signal)
+            labels.append(label_num)
+
+    print("Following files where under the energy threshold of {} and "
+          "were not loaded: {}".format(energy_threshold, ignored_audio))
+
+    return signals, labels
