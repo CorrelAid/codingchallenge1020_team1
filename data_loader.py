@@ -174,3 +174,41 @@ def load_additional_utterances(path_additional="data\\AdditionalUtterances\\late
           "were not loaded: {}".format(energy_threshold, ignored_audio))
 
     return signals, labels
+
+
+def load_testset(path_original="data\\audio_files", train_csv_path="Train.csv", sample_rate=44100):
+    """Function to load and return all (unlabeled) test utterances
+
+    :param path_original: Path to directory where original .wav files are located
+    :param train_csv_path: Path to the Train.csv file
+    :param sample_rate: sample rate for loading audio data
+    :return: signals (list of np arrays of test audio data)
+    """
+
+    # Load Train.csv file
+    csv_file = open(train_csv_path, newline='')
+    train_csv = csv.reader(csv_file, delimiter=',')
+    # Call iterator one time to get rid of first row that only contains descriptions
+    train_csv.__next__()
+
+    # Create list with all train samples (only file names) from original folder
+    all_train_samples = [row[0].split('/')[-1] for row in train_csv]
+
+    all_audio_files = os.listdir(path_original)
+
+    signals = []
+
+    for filename in all_audio_files:
+
+        # Using os.path.join for all path operations to make it OS agnostic
+        file_path = os.path.join(path_original, filename)
+
+        # Skip sample if it's part of the training set and thus not test set
+        if filename in all_train_samples:
+            continue
+
+        # Load signal and save to list
+        signal, sr = librosa.load(file_path, sr=sample_rate)
+        signals.append(signal)
+
+    return signals
