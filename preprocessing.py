@@ -14,3 +14,13 @@ def time_stretch(audio_sample, low=1.1, high=1.5):
         stretch_factor = 1/stretch_factor
 
     return librosa.effects.time_stretch(audio_sample, stretch_factor)
+
+
+def change_pitch(audio_sample, low=1.5, high=4):
+
+    if isinstance(audio_sample, str) and audio_sample.split(".")[-1] == ".wav":
+        audio_sample = librosa.load(audio_sample, sr=48000)
+
+    pitch_factor = np.random.uniform(low, high) * random.choice([1, -1])
+
+    return librosa.effects.pitch_shift(audio_sample, sr=48000, n_steps=pitch_factor)
