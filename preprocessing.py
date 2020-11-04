@@ -27,6 +27,10 @@ def augment_sample(audio_sample_path, target_seconds=3, stretch_low=1.1, stretch
     audio_regions_arrays, audio_regions_info = merge_regions(audio_regions_arrays, audio_regions_info, sr=sr)
 
     total_len = np.sum([max(a.shape) for a in audio_regions_arrays])
+    if total_len < 100:
+        dur = total_len/sr
+        print("Skipping sample {} because it has only {} seconds of activation.".format(audio_sample_path, dur))
+        return None
     max_stretch = int(100 * target_len/total_len)/100
 
     stretch_high = min(max_stretch, stretch_high)
